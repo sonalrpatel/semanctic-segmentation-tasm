@@ -21,7 +21,6 @@ class DANet(tf.keras.Model):
         self.height = height
         self.width = width
 
-
         if self.output_stride == 8:
             self.final_upsampling2d = tf.keras.layers.UpSampling2D(size=8, interpolation="bilinear")
             output_layers = output_layers[:3]
