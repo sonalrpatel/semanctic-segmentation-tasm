@@ -2,6 +2,9 @@ from .__version__ import __version__
 from . import base
 from . import losses
 from . import metrics
+from . import utils
+from . import helpers
+from . import data_generator
 
 from .backbones.tf_backbones import create_base_model
 from .models.FCN import FCN
