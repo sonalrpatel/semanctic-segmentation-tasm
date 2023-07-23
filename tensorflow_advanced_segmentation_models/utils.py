@@ -275,21 +275,6 @@ def one_hot_encode_op(mask, class_colors):
     return one_hot_map
 
 
-# def one_hot_encode_op(image, palette):
-#     one_hot_map = []
-#     for class_colors in palette:
-#         class_colors = [np.array(class_colors)]
-#         class_map = tf.zeros(image.shape[0:2], dtype=tf.int32)
-#         for color in class_colors:
-#             # find instances of color and append layer to one-hot-map
-#             class_map = tf.bitwise.bitwise_or(class_map, tf.cast(tf.reduce_all(tf.equal(image, color), axis=-1), tf.int32))
-#         one_hot_map.append(class_map)
-#     # finalize one-hot-map
-#     one_hot_map = tf.stack(one_hot_map, axis=-1)
-#     one_hot_map = tf.cast(one_hot_map, tf.float32)
-#     return one_hot_map
-
-
 def decode_one_hot_gray(one_hot_map):
     return np.argmax(one_hot_map, axis=-1)
 

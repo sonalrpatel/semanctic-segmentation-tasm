@@ -122,8 +122,10 @@ The following is for Dataset Generation using tf.data.Dataset method.
 class DatasetGenerator(object):
     def __init__(self,
                  data_path=None,
+                 label_pattern=None,
                  max_samples=0,
                  image_shape=(256, 256),
+                 p_a_r=False,
                  augment=False,
                  class_colors=None,
                  shuffle=True,
@@ -137,9 +139,11 @@ class DatasetGenerator(object):
 
         self.image_path = image_path
         self.label_path = label_path
+        self.label_pattern = label_pattern
         self.max_samples = max_samples
         self.image_shape = image_shape
         self.class_colors = class_colors
+        self.preserve_aspect_ratio = p_a_r
         self.augment = augment
         self.shuffle = shuffle
         self.epochs = epochs
@@ -150,7 +154,7 @@ class DatasetGenerator(object):
     def dataset_from_path(self):
         # list files
         image_file = get_files_recursive(self.image_path)
-        label_file = get_files_recursive(self.label_path)
+        label_file = get_files_recursive(self.label_path, self.label_pattern)
         _, ids = sample_list(label_file, n_samples=self.max_samples)
         image_file = np.take(image_file, ids)
         label_file = np.take(label_file, ids)
@@ -169,8 +173,8 @@ class DatasetGenerator(object):
     def preprocess_dataset(self, dataset: tf.data.Dataset):
         # load data
         def load_data(image, label):
-            image = resize_image_op(image, self.image_shape)
-            label = resize_image_op(label, self.image_shape)
+            image = resize_image_op(image, self.image_shape, self.preserve_aspect_ratio)
+            label = resize_image_op(label, self.image_shape, self.preserve_aspect_ratio)
             
             if self.augment:
                 image, label = augment(image, label)
